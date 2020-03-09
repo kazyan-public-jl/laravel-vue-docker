@@ -46,5 +46,6 @@ $ cp .env.example .env.local
 # DBの設定を docker-compose.yml と同じに修正
 $ vi .env.local
 
-
+# JSとSASS、ビルドファイルを作成
+$ 
 ```
