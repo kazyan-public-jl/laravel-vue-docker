@@ -45,7 +45,33 @@ $ docker-compose up -d
 $ cp .env.example .env.local
 # DBの設定を docker-compose.yml と同じに修正
 $ vi .env.local
+```
 
-# JSとSASS、ビルドファイルを作成
-$ 
+続きは画面要素を作る
+
+## JSとSASS、ビルドファイルを作成
+
+- 画面表示に必要な scss, js, blade.php を追加
+- アプリのCSRFチェックを追加
+
+```sh
+# いくつかのファイルを追加後、フロントエンド要素のコンパイルを実行
+$ npm run dev
+
+# laravelが読み込む .env を生成
+$ cp .env.local .env
+
+# アプリキーを作成, .env の APP_KEYに反映
+$ php artisan key:generate
+# キャッシュを削除して.envファイルを反映
+$ php artisan config:clear
+# サーバーを起動
+$ php artisan serve
+Laravel development server started: http://127.0.0.1:8000
+```
+
+- `https://localhost:3000` にアクセスして次のような結果が出ていればOK
+```
+Hello, World
+{{ vueData }}
 ```
