@@ -40,4 +40,11 @@ $ docker login
 $ vi docker-compose.yml
 ## Dockerコンテナを起動
 $ docker-compose up -d
+
+# .env.local を作成
+$ cp .env.example .env.local
+# DBの設定を docker-compose.yml と同じに修正
+$ vi .env.local
+
+
 ```
