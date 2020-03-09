@@ -31,5 +31,13 @@ $ npm install
 $ composer require predis/predis
 $ composer install
 
-
+# DBとキャッシュを起動（Dockerを利用）
+## Dockerのインストール
+### 公式サイトから Docker.dmg をダウンロード＆実行してインストール
+### 一度 Docker にログインしておく.
+$ docker login
+## Dockerの設定ファイルを編集
+$ vi docker-compose.yml
+## Dockerコンテナを起動
+$ docker-compose up -d
 ```
