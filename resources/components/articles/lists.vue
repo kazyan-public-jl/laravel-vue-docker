@@ -3,9 +3,20 @@
     <h1>タスク一覧ページ</h1>
     <section>
       <h2>タスク一覧</h2>
-      <ul id="task_list">
-        <li v-for="task in tasks" :key="task.id">{{ task.id }}: {{ task.name }} → {{ task.done ? "完了" : "未完了" }}</li>
-      </ul>
+      <task-list 
+        :tasks="tasks"
+      />
+      <div>
+        <input
+          type="text"
+          laceholder="タスク名を追加"
+          value=""
+          v-model="newTask.name" />
+        <button
+          @click="addTask">
+          タスク追加
+        </button>
+      </div>
     </section>
     <section>
       <h2>ページ一覧</h2>
@@ -19,16 +30,47 @@
 </template>
 
 <script>
-module.exports = {
+import TaskList from './taskList.vue';
+
+export default {
   data: function() {
     return {
       tasks: [
-        { id: 1, name: "task1" , done: true},
-        { id: 2, name: "task2" , done: true},
-        { id: 3, name: "task3" , done: false},
-        { id: 4, name: "task4" , done: false},
-      ]
+        { id: 1, name: "task1" , status: true},
+        { id: 2, name: "task2" , status: true},
+        { id: 3, name: "task3" , status: false},
+        { id: 4, name: "task4" , status: false},
+      ],
+      newTask: {
+        name: "",
+      }
     };
+  },
+  components: {
+    TaskList,
+  },
+  methods: {
+    addTask (event) {
+      const url = 'api/add_task';
+      const postData = {
+        name: this.newTask.name
+      }
+      console.log('POST:', url, postData);
+
+      // TODO: server API 対応
+
+      // 新規タスクを tasks に追加
+      const resTask = postData;
+      const newTask = {
+        id: this.tasks.length + 1,
+        name: resTask.name,
+        status: false,
+      };
+      this.tasks.push(newTask);
+
+      // タスク追加フォームを初期化
+      this.newTask = { name: "" };
+    }
   }
 };
 </script>
