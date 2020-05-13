@@ -14,6 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'api'], function(){
+    Route::get('/tasks', function (Request $request) {
+        return [
+            'tasks' => [
+                [ "id"=> 1, "name"=> "task1", "status"=> true ],
+                [ "id"=> 2, "name"=> "task2", "status"=> true ],
+                [ "id"=> 3, "name"=> "task3", "status"=> false ],
+                [ "id"=> 4, "name"=> "task4", "status"=> false ],
+            ]
+        ];
+    });
 });

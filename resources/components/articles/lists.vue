@@ -35,21 +35,28 @@ import TaskList from './taskList.vue';
 export default {
   data: function() {
     return {
-      tasks: [
-        { id: 1, name: "task1" , status: true},
-        { id: 2, name: "task2" , status: true},
-        { id: 3, name: "task3" , status: false},
-        { id: 4, name: "task4" , status: false},
-      ],
+      tasks: [],
       newTask: {
         name: "",
       }
     };
   },
+  mounted () {
+    console.log('mounted lists.vue');
+    this.fetchTasks();
+  },
   components: {
     TaskList,
   },
   methods: {
+    fetchTasks () {
+      const url = '/api/tasks';
+      axios.get(url).then(response => {
+        console.log('GET response:', url, response);
+        const newTasks = response.data.tasks;
+        this.tasks = newTasks;
+      });
+    },
     addTask (event) {
       const url = 'api/add_task';
       const postData = {
