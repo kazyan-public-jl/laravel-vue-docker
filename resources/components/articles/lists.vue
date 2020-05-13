@@ -53,30 +53,26 @@ export default {
       const url = '/api/tasks';
       axios.get(url).then(response => {
         console.log('GET response:', url, response);
-        const newTasks = response.data.tasks;
+        const newTasks = response?.data?.tasks ?? [];
         this.tasks = newTasks;
       });
     },
     addTask (event) {
-      const url = 'api/add_task';
+      const url = 'api/tasks/add_task';
       const postData = {
         name: this.newTask.name
       }
       console.log('POST:', url, postData);
 
       // TODO: server API 対応
-
-      // 新規タスクを tasks に追加
-      const resTask = postData;
-      const newTask = {
-        id: this.tasks.length + 1,
-        name: resTask.name,
-        status: false,
-      };
-      this.tasks.push(newTask);
-
-      // タスク追加フォームを初期化
-      this.newTask = { name: "" };
+      axios.post(url, postData).then(response => {
+        // 新規タスクを tasks に追加
+        const newTask = response?.data?.task;
+        console.log('POST: response', url, response);
+        this.tasks.push(newTask);
+        // タスク追加フォームを初期化
+        this.newTask = { name: "" };
+      });
     }
   }
 };

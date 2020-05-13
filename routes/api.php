@@ -25,4 +25,9 @@ Route::group(['middleware' => 'api'], function(){
             ]
         ];
     });
+    Route::post('/tasks/add_task', function (Request $request) {
+        return [
+            'task' => [ "id"=> 5, "name"=> "task5", "status"=> false ],
+        ];
+    });
 });
