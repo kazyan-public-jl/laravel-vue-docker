@@ -53,7 +53,8 @@ export default {
       const url = '/api/tasks';
       axios.get(url).then(response => {
         console.log('GET response:', url, response);
-        const newTasks = response?.data?.tasks ?? [];
+        // response.data = Tasksモデルデータの配列
+        const newTasks = response?.data ?? [];
         this.tasks = newTasks;
       });
     },
