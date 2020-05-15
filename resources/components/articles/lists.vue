@@ -59,18 +59,20 @@ export default {
       });
     },
     addTask (event) {
-      const url = 'api/tasks/add_task';
+      const url = 'api/tasks';
       const postData = {
-        name: this.newTask.name
-      }
+        tasks: [{ name: this.newTask.name }],
+      };
       console.log('POST:', url, postData);
 
       // TODO: server API 対応
       axios.post(url, postData).then(response => {
         // 新規タスクを tasks に追加
-        const newTask = response?.data?.task;
+        const newTasks = response?.data?.tasks;
         console.log('POST: response', url, response);
-        this.tasks.push(newTask);
+        newTasks.forEach(newTask => {
+          this.tasks.push(newTask);
+        });
         // タスク追加フォームを初期化
         this.newTask = { name: "" };
       });
