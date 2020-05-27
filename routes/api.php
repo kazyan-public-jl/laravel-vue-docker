@@ -17,7 +17,7 @@ use App\Http\Controllers\TasksController;
 
 Route::get('/tasks', 'TasksController@read');
 Route::post('/tasks', 'TasksController@store'); // updateの対象が存在しない場合は create 処理をする
-// Route::delete('/tasks', 'TasksController@delete');
+Route::delete('/tasks', 'TasksController@delete');
 
 Route::group(['middleware' => 'api'], function(){
     Route::post('/tasks/add_task', function (Request $request) {

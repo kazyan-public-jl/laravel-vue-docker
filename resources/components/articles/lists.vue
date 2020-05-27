@@ -5,18 +5,9 @@
       <h2>タスク一覧</h2>
       <task-list 
         :tasks="tasks"
+        @onUpdateTasks="updateTasks"
       />
-      <div>
-        <input
-          type="text"
-          laceholder="タスク名を追加"
-          value=""
-          v-model="newTask.name" />
-        <button
-          @click="addTask">
-          タスク追加
-        </button>
-      </div>
+      <add-task-area :tasks="tasks" />
     </section>
     <section>
       <h2>ページ一覧</h2>
@@ -31,52 +22,31 @@
 
 <script>
 import TaskList from './taskList.vue';
+import AddTaskArea from './AddTaskArea.vue';
+import { fetchTasks } from './TaskApi.js';
 
 export default {
   data: function() {
     return {
       tasks: [],
-      newTask: {
-        name: "",
-      }
     };
   },
   mounted () {
-    console.log('mounted lists.vue');
     this.fetchTasks();
   },
   components: {
     TaskList,
+    AddTaskArea,
   },
   methods: {
     fetchTasks () {
-      const url = '/api/tasks';
-      axios.get(url).then(response => {
-        console.log('GET response:', url, response);
-        // response.data = Tasksモデルデータの配列
-        const newTasks = response?.data ?? [];
-        this.tasks = newTasks;
+      fetchTasks((newTasks)=>{
+        this.updateTasks(newTasks);
       });
     },
-    addTask (event) {
-      const url = 'api/tasks';
-      const postData = {
-        tasks: [{ name: this.newTask.name }],
-      };
-      console.log('POST:', url, postData);
-
-      // TODO: server API 対応
-      axios.post(url, postData).then(response => {
-        // 新規タスクを tasks に追加
-        const newTasks = response?.data?.tasks;
-        console.log('POST: response', url, response);
-        newTasks.forEach(newTask => {
-          this.tasks.push(newTask);
-        });
-        // タスク追加フォームを初期化
-        this.newTask = { name: "" };
-      });
-    }
+    updateTasks (newTasks) {
+      this.tasks = newTasks;
+    },
   }
 };
 </script>

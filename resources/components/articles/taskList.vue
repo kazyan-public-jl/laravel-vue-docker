@@ -7,39 +7,44 @@
       <th></th>
     </thead>
     <tbody>
-      <tr v-for="task in tasks" :key="task.id">
-        <td>{{ task.id }}</td>
-        <td><input v-model="task.name" @change="validateTaskName" type="text" /></td>
-        <td><input v-model="task.status" type="checkbox" name="status" :id="'task_'+task.id"><label :for="'task_'+task.id">{{ task.status ? "完了" : "未完了" }}</label></td>
-        <td><button @click="deleteTask" name="deleteTask" :value="task.id">削除</button></td>
-      </tr>
+      <task-item v-for="task in sortedTasks"
+        :key="task.id"
+        :task="task"
+        :tasks="tasks"
+        @onChangeOrder="onChangeOrder"
+        @onUpdateTasks="onUpdateTasks"
+      />
     </tbody>
   </table>
 </template>
 
 <script>
+import Task from "./task.vue";
 
 export default {
   props: {
     tasks: Array,
   },
-  data: function() {
-    return {
-      
-    };
+  computed: {
+    sortedTasks: function () {
+      return this.tasks.sort((taskA,taskB)=>{
+        // 昇順に並び替え
+        return taskA.order - taskB.order;
+      });
+    }
+  },
+  components: {
+    taskItem: Task,
   },
   methods: {
-    deleteTask(event) {
-      const targetId = event.currentTarget.value;
-      const deleteIndex = this.tasks.findIndex(task => {
-        return task.id == targetId;
-      });
-      this.tasks.splice(deleteIndex, 1);
-      console.log('deleted.', this.tasks);
+    onChangeOrder: function(fromOrder, toOrder) {
+      const fromIndex = this.tasks.findIndex(task=>task.order==fromOrder);
+      const toIndex = this.tasks.findIndex(task=>task.order==toOrder);
+      this.tasks[fromIndex].order = toOrder;
+      this.tasks[toIndex].order = fromOrder;
     },
-    validateTaskName(event) {
-      // TODO: タスク名の重複チェック
-      return true;
+    onUpdateTasks: function(newTasks) {
+      this.$emit('onUpdateTasks', newTasks);
     }
   }
 };
